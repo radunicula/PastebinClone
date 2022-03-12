@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}
+    DeleteProduct
+{% endblock %}
+
+{% block content %}
+    <form method="post">{% csrf_token %}
+    <p class="alert alert-danger" role="alert">Are you sure you want to delete "{{ object }}"?</p>
+    <input type="submit" value="Confirm" class="btn btn-danger" style = "width : 188px;">
+    </form>
+    <a class="btn btn-success" href={% url 'posts_list' %} >Back to list of products</a>
+{% endblock %}

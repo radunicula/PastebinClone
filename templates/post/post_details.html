@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}
+    PostDetail
+{% endblock %}
+
+
+{% block content %}
+    <div class="card">
+      <div class="card-header">
+          <h4>{{ post.title }}</h4>
+      </div>
+      <div class="card-body">
+        <blockquote class="blockquote mb-0">
+          {{ post.content }}
+        </blockquote>
+      </div>
+    </div>
+
+{% endblock %}

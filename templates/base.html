@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+</head>
+<body style="background-color: #c7c7c7">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <!-- Site Logo Here -->
+        <a class="navbar-brand" href="{% url 'post' %}">PASTEBIN</a>
+        <!-- Mobile Toggle Button -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMobileToggle" aria-controls="navbarMobileToggle" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarMobileToggle">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">API</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">TOOLS</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">FAQ</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a type="button" href="{% url 'add_post' %}" class="btn btn-success" ><i class="bi bi-plus-lg"></i> paste</a>
+                </li>
+                {% endif %}
+            </ul>
+
+            {% if user.is_authenticated %}
+                <div class="btn-group float-end">
+                <a href="#" class="dropdown-toggle text-decoration-none text-light" data-bs-toggle="dropdown">
+                <i class="bi bi-person-circle"></i>
+                <span>{{ request.user.username }}</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                    <li><a href="{% url 'posts_list' %}" class="dropdown-item"><i class="bi bi-lock-fill"></i> MY PASTEBIN</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a href="{% url 'password_change' %}" class="dropdown-item"><i class="bi bi-gear-fill"></i> CHANGE PASSWORD</a></li>
+                    <li><a href="{% url 'logout' %}" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> LOG OUT</a></li>
+                </ul>
+                </div>
+            {% else %}
+                <div class="btn-group float-end">
+                    <div class="btn-group" role="group" >
+                      <a type="button" class="btn btn-primary" href="{% url 'login' %}">LOGIN</a>
+                      <a type="button" class="btn btn-primary" href="{% url 'register' %}">SIGN UP</a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+    <br>
+    <div class="container-lg">
+         <div class="row">
+    <div class="col">
+      {% block content %}
+        {% endblock %}
+    </div>
+    <div class="col-md-auto">
+        <table class="table table-striped table-hover">
+    <thead>
+    <tr>
+        <th>Public Pastes</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for post in all_public_posts %}
+    <tr>
+        <td><a href="{% url 'post_details' post.id %}" class="link-dark">{{post.title}}</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    </div>
+  </div>
+    </div>
+
+
+</body>
+</html>
