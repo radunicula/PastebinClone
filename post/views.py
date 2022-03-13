@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView, ListView, DeleteView, UpdateView, DetailView
 from post.models import Post
@@ -28,10 +29,12 @@ class PostsListView(LoginRequiredMixin, ListView):
         return Post.objects.filter(user=self.request.user)
 
 
-class RecentPostsListView(ListView):
-    template_name = 'base.html'
-    model = Post
-    context_object_name = 'all_public_posts'
+def posts_list_view(request):
+    queryset = Post.objects.all()
+    context = {
+        'object_list': queryset
+    }
+    return render(request, 'base.html', context)
 
 
 class DeletePostView(DeleteView):
@@ -43,8 +46,8 @@ class DeletePostView(DeleteView):
 class EditPostView(UpdateView):
     template_name = 'post/edit_post.html'
     model = Post
-    success_url = reverse_lazy('products_list')
-    fields = '__all__'
+    success_url = reverse_lazy('posts_list')
+    fields = ['title', 'content']
     context_object_name = 'post'
 
 
